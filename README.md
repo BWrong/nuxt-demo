@@ -1,75 +1,40 @@
-# Nuxt 3 Minimal Starter
+# crecohe-web
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
+## Build Setup
 
 ```bash
-# npm
-npm install
+# install dependencies
+$ yarn install
 
-# pnpm
-pnpm install
+# serve with hot reload at localhost:3000
+$ yarn dev
 
-# yarn
-yarn install
+# build for production and launch server
+$ yarn build
+$ yarn start
 
-# bun
-bun install
+# generate static project
+$ yarn generate
 ```
 
-## Development Server
+# 如何部署
 
-Start the development server on `http://localhost:3000`:
+1. `npm run build`打包
+2. 将.nuxt、nuxt.config.js、package.json、static文件上传到服务器。
+3. 在上传的地方执行`npm i`。
+4. 首次启动使用`npm run pm2`；重启PM2使用`pm2 restart all`。
 
-```bash
-# npm
-npm run dev
 
-# pnpm
-pnpm run dev
 
-# yarn
-yarn dev
 
-# bun
-bun run dev
-```
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 接口
+- ~~首页~~
+- ~~关于华西~~
+- ~~服务~~
+- ~~案例~~
+- ~~团队~~
+- ~~新闻~~
+- ~~招聘~~
+- 联系
