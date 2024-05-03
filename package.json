@@ -9,25 +9,30 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint . --fix",
     "pm2": "pm2 start npm --name \"crecohe-web\" -i 1 -- run start"
   },
   "dependencies": {
+    "@bwrong/storage": "^1.1.0",
     "@pinia/nuxt": "^0.5.1",
-    "@tsparticles/slim": "^3.3.0",
-    "@tsparticles/vue3": "^3.0.1",
+    "animate.css": "^4.1.1",
+    "aos": "^2.3.4",
     "dayjs": "^1.11.11",
+    "nuxt-particles": "^0.3.0",
+    "nuxt-swiper": "^1.2.2",
+    "qs": "^6.12.1",
     "v-region": "^3.0.0",
     "vue": "^3.4.26",
-    "vue-lazyload": "^3.0.0",
+    "vue-awesome-paginate": "^1.1.46",
+    "vue-final-modal": "^4.5.4",
     "vue-m-message": "^4.0.2",
     "vue-router": "^4.3.2",
-    "vue3-baidu-map-gl": "^2.3.2",
-    "vuejs-paginate-next": "^1.0.2"
+    "vue3-baidu-map-gl": "^2.3.2"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-module": "^4.1.0",
-    "@rushstack/eslint-patch": "^1.10.2",
+    "@nuxt/eslint": "^0.3.10",
+    "@types/aos": "^3.0.7",
     "@unocss/eslint-config": "^0.59.4",
     "@unocss/nuxt": "^0.59.4",
     "@unocss/preset-rem-to-px": "^0.59.4",
@@ -41,6 +46,8 @@
     "less": "^4.2.0",
     "nuxt": "^3.11.2",
     "prettier": "^3.2.5",
-    "unocss": "^0.59.4"
+    "typescript": "^5.4.5",
+    "unocss": "^0.59.4",
+    "vue-tsc": "^2.0.16"
   }
 }

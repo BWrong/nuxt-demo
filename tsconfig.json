@@ -2,9 +2,11 @@
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
+    "noImplicitAny": false,
+    "noImplicitThis": false,
     "types": [
       // "jquery",
-      "vue3-baidu-map-gl/volar"
+      "vue3-baidu-map-gl/volar.d.ts"
     ]
   },
 }

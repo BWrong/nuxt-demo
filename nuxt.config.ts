@@ -1,18 +1,24 @@
 import { resolve } from 'node:path';
-const appTitle = import.meta.env.VITE_APP_TITLE
+const appTitle = import.meta.env.VITE_APP_TITLE;
+const ak = import.meta.env.VITE_BAIDU_MAP_AK;
+const API_ROOT = import.meta.env.VITE_API_ROOT;
+const API_HOST = import.meta.env.VITE_API_HOST;
+const DOMAIN_HOST = import.meta.env.VITE_DOMAIN_HOST;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   // 环境变量
-  $development: {},
-  $production: {},
+  // $development: {},
+  // $production: {},
   // 配置，可以使用环境变量覆盖，可使用useRuntimeConfig在应用中获取
   runtimeConfig: {
     // 仅在服务端可用
-    apiSecret: '123',
+    // apiSecret: '123',
     // 可在客户端使用
     public: {
-      apiBase: '/api'
+      API_HOST,
+      API_ROOT,
+      DOMAIN_HOST
     }
   },
   imports: {
@@ -20,64 +26,47 @@ export default defineNuxtConfig({
     autoImport: true
   },
   // 自动注册组件
-  // components: {
-  //   dirs: []
-  // },
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false
+    }
+  ],
   // 控制路由渲染模式
   routeRules: {},
   modules: [
-    // https://nuxt.com/modules/eslint
-    // ['@nuxtjs/eslint-module', {}],
-    '@unocss/nuxt',
-    '@pinia/nuxt',
-    // TODO
+    // https://github.com/Joepocalyptic/nuxt-particles
+    'nuxt-particles',
+    '@nuxt/eslint',
+    '@unocss/nuxt', // TODO
     // ['cookie-universal-nuxt', { parseJSON: false }]
+    '@pinia/nuxt',
+    // https://nuxt.com/modules/swiper
+    'nuxt-swiper'
   ],
+  swiper: {},
   // https://nuxt.com/docs/guide/directory-structure/plugins
-  plugins: [
-    // '@/plugins/router', // 路由守卫
-    // '~/plugins/element-ui',
-    // {
-    //   src: '~/plugins/request'
-    //   // mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/vue-awesome-swiper',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/city-picker',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/baidu-map',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/m-message',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/vuejs-paginate',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/vue-particles',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/jquery',
-    //   mode: 'client'
-    // },
-    // {
-    //   src: '@/plugins/filters'
-    // },
-    // {
-    //   src: "~/plugins/lazy-load",
-    //   ssr: false
-    // }，
-    // '~/plugins/err-handler'
-  ],
+  plugins: [],
+  nitro: {
+    // 用于客户端代理
+    devProxy: {
+      [API_ROOT]: {
+        target: API_HOST, // 这里是接口地址
+        changeOrigin: true,
+        prependPath: true,
+      }
+    },
+    // 该配置用于服务端请求转发
+    // routeRules: {
+    //   '/api/**': {
+    //     proxy: 'https://xxx.com/api/**'
+    //   }
+    // }
+  },
+  typescript: {
+    // typeCheck: true, // 生成时进行类型检查
+    strict: false // 开启严格模式
+  },
   router: {
     // TODO
     // linkActiveClass: 'on',
@@ -103,14 +92,17 @@ export default defineNuxtConfig({
         { name: 'referrer', content: 'no-referrer' }, // 解决外链图片不显示问题
         { name: 'format-detection', content: 'telephone=no' }
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      script: [
+        {
+          src: `https://api.map.baidu.com/api?v=1.0&type=webgl&ak=${ak}`,
+          tagPosition: 'bodyClose'
+        }
+      ]
     }
   },
   // 全局样式
-  css: [
-    // 'animate.css',
-    '~/assets/styles/common.less'
-  ],
+  css: ['@unocss/reset/tailwind-compat.css', 'animate.css', '~/assets/styles/common.less'],
   postcss: {
     plugins: {
       // 'postcss-nested': {},

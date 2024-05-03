@@ -3,7 +3,7 @@
  * @Github: https://github.com/BWrong
  * @Date: 2024-04-24 11:10:24
  * @LastEditors: Bwrong
- * @LastEditTime: 2024-04-27 16:53:49
+ * @LastEditTime: 2024-05-03 11:09:52
  */
 /// <reference types="vite/client" />
 declare module '*.vue' {

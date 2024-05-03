@@ -5,8 +5,13 @@
   </NuxtLayout>
 </template>
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig();
-console.log(runtimeConfig);
+// const runtimeConfig = useRuntimeConfig();
+const store = useAppStore();
+let userAgent = useRequestHeader('user-agent');
+userAgent = userAgent?.toLowerCase() || '';
+// 判断是否在微信打开
+const isWechat = userAgent.indexOf('micromessenger') !== -1;
+store.setIsWechat(isWechat);
 </script>
 <style>
 .page-enter-active,

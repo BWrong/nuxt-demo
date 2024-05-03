@@ -3,11 +3,49 @@
  * @Github: https://github.com/BWrong
  * @Date: 2020-04-07 10:30:49
  * @LastEditors: Bwrong
- * @LastEditTime: 2024-04-24 10:11:34
+ * @LastEditTime: 2024-05-03 11:29:46
  */
 
 import dayjs from 'dayjs';
 import { SEX } from '@/enums';
+/**
+ * 获取对象中的字段
+ * @param val
+ * @param key
+ * @returns
+ */
+export const getExtendFilds = <T extends object>(val: T, key: keyof T) => {
+  if (!val) return '';
+  return val[key] || '';
+};
+/**
+ * 截取字符串
+ * @param src
+ * @param length
+ * @returns
+ */
+export const intercept = (src: string, length: number): string => (src.length < length ? src : `${src.slice(0, length)}...`);
+/**
+ * 字符串分割
+ * @param val
+ * @param reg
+ * @param num
+ * @returns
+ */
+export const split = (val: string, reg: RegExp, num: number) => val.split(reg)[num] || '';
+
+/**
+ * 首字母大写
+ * @param val
+ * @returns
+ */
+export const upperCase = (val: string) => (val ? val.toUpperCase() : '');
+/**
+ * 首字母小写
+ * @param val
+ * @returns
+ */
+export const lowerCase = (val: string) => (val ? val.toLowerCase() : '');
 /**
  * 格式化时间
  * @param {*} value
@@ -31,7 +69,6 @@ export function isPoneAvailable(pone) {
 }
 // 合法姓名判断
 export function userRealName(userName) {
-  const _this = this;
   const reg = /^[\u4E00-\u9FA5]{2,4}$/;
   if (!reg.test(userName)) {
     return false;
