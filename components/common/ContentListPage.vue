@@ -68,7 +68,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const pageNow = ref(props.defaultPage);
 
-const { data, pending, refresh, status } = await useAsyncData('contentList' + props, () =>
+const { data, pending, refresh, status } = await useAsyncData('contentListPage' + props, () =>
   getContentByTypePage({
     pageNow: pageNow.value,
     pageSize: props.pageSize,

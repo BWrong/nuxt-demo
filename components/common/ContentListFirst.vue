@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   showLoading: false
 });
 const detail = ref({} as ContentDetail);
-const { data, pending, status } = await useAsyncData('contentList' + props, () =>
+const { data, pending, status } = await useAsyncData('contentListFirst' + props, () =>
   getContentByTypePage({
     pageNow: 1,
     pageSize: 1,
