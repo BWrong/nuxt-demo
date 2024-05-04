@@ -14,37 +14,7 @@
 import { contentGetById } from '~/api';
 import type { ContentDetail } from '~/api/types';
 
-// async fetch() {
-  //   if (!this.id) return;
-  //   this.loading = true;
-  //   try {
-  //     const res = await this.$api.contentGetById({
-  //       id: this.id,
-  //       pageScopeId: this.scopeId
-  //     });
-  //     this.detail = res?.content || {};
-  //     this.prev = res?.last;
-  //     this.next = res?.next;
-  //     const { linkType, outterLink, innerLinkId, id, innerLinkType } = this.detail;
-  //     const { scopeId } = this.$route;
-  //     if (this.autoRedirect) {
-  //       if (linkType === 2) {
-  //         this.$nuxt.context.redirect(outterLink);
-  //       } else if (linkType === 1) {
-  //         this.$nuxt.context.redirect(`/news/${innerLinkId}?type=${innerLinkType}&scopeId=${scopeId}`);
-  //       }
-  //     }
-  //     this.$emit('ready', {
-  //       detail: this.detail,
-  //       prev: this.prev,
-  //       next: this.next
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     this.loading = false;
-  //   }
-defineOptions({ name: 'ContentDetail', });
+defineOptions({ name: 'ContentDetail' });
 interface Props {
   id: string | number;
   scopeId?: string;
@@ -61,9 +31,34 @@ const detail = ref({} as ContentDetail);
 const prev = ref<ContentDetail | null>(null);
 const next = ref<ContentDetail | null>(null);
 
-const { data, pending } = await useAsyncData('contentDetail' + props.id, () => contentGetById({
-  id: props.id,
-  pageScopeId: props.scopeId
-}));
-console.log(data.value, 111111);
+const { data, pending, status } = await useAsyncData('contentDetail' + props.id, () =>
+  contentGetById({
+    id: props.id,
+    pageScopeId: props.scopeId
+  })
+);
+detail.value = data.value?.content || {};
+prev.value = data.value?.last;
+next.value = data.value?.next;
+const route = useRoute();
+const emits = defineEmits(['ready']);
+const { linkType, outterLink, innerLinkId, id, innerLinkType } = detail.value;
+const { scopeId } = route.query;
+if (props.autoRedirect) {
+  if (linkType === 2) {
+    navigateTo(outterLink, {
+      external: true,
+      open: { target: '_blank' }
+    });
+  } else if (linkType === 1) {
+    navigateTo(`/news/${innerLinkId}?type=${innerLinkType}&scopeId=${scopeId}`);
+  }
+}
+watch(status, (val) => {
+  val === 'success' && emits('ready', {
+    detail: detail.value,
+    prev: prev.value,
+    next: next.value
+  });
+});
 </script>

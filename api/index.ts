@@ -3,9 +3,9 @@
  * @Github: https://github.com/BWrong
  * @Date: 2020-11-13 09:48:05
  * @LastEditors: Bwrong
- * @LastEditTime: 2024-05-03 22:15:09
+ * @LastEditTime: 2024-05-04 17:21:43
  */
-import { get, post } from '~/utils/request';
+import { get, post } from './request';
 import type { ContentDetail } from './types';
 
 // 新增咨询
@@ -14,7 +14,7 @@ export const addConsult = (params) => post('/public/addConsult', params, { heade
 export const consultExtensionFields = (params) => post('/public/consultExtensionFields', params);
 // *根据ID获取内容
 export const contentGetById = (params) => {
-  return get<ContentDetail>('/api/public/contentGetById', params);
+  return get<ContentDetail>('/public/contentGetById', params);
 };
 // 获取所有可用类别
 export const contentTypeList = (params) => get('/public/contentTypeList', params);

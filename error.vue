@@ -1,41 +1,43 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app';
 
-defineProps({
-  error: Object as () => NuxtError
-});
+defineProps({ error: Object as () => NuxtError });
 const options = {
   fullScreen: {
     enable: true,
     zIndex: -1
   },
   particles: {
-    color: {
-      value: "#B6D4FF"
-    },
+    color: { value: '#B6D4FF' },
     links: {
-      color: "#B6D4FF",
+      color: '#B6D4FF',
       enable: true
     },
-    move: {
-      enable: true
-    },
-    number: {
-      value: 80
-    }
+    move: { enable: true },
+    number: { value: 80 }
   }
-}
+};
 </script>
 
 <template>
   <div class="page404-container">
-    <NuxtParticles id="tsparticles" :options="options" class="particles" />
+    <NuxtParticles
+      id="tsparticles"
+      :options="options"
+      class="particles"
+    />
     <div class="info content-box">
       <div class="pic" />
       <h1>{{ error.statusCode }}</h1>
       <span v-if="error.statusCode === 404">抱歉，您访问的页面不存在</span>
-      <span v-else>{{ error.message || '应用发生错误异常' }}</span>
-      <NuxtLink to="/" class="back-btn">返回首页</NuxtLink></div>
+      <span v-else>{{ error?.message || '应用发生错误异常' }}</span>
+      <NuxtLink
+        to="/"
+        class="back-btn"
+      >
+        返回首页
+      </NuxtLink>
+    </div>
   </div>
 </template>
 <style lang="less" scoped>
@@ -72,8 +74,6 @@ const options = {
   top:0;
   left:0;
 }
-
-
 
 .back-btn {
   border: 1px solid #263578;

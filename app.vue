@@ -1,5 +1,6 @@
 <!-- 入口文件 -->
 <template>
+  <NuxtLoadingIndicator />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>

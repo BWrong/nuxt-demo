@@ -1,9 +1,6 @@
 import { resolve } from 'node:path';
-const appTitle = import.meta.env.VITE_APP_TITLE;
-const ak = import.meta.env.VITE_BAIDU_MAP_AK;
-const API_ROOT = import.meta.env.VITE_API_ROOT;
-const API_HOST = import.meta.env.VITE_API_HOST;
-const DOMAIN_HOST = import.meta.env.VITE_DOMAIN_HOST;
+const { VITE_APP_TITLE, VITE_BAIDU_MAP_AK, VITE_API_ROOT, VITE_API_HOST, VITE_DOMAIN_HOST } = import.meta.env;
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
@@ -14,11 +11,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // 仅在服务端可用
     // apiSecret: '123',
-    // 可在客户端使用
+    // 可在服务端和客户端使用
     public: {
-      API_HOST,
-      API_ROOT,
-      DOMAIN_HOST
+      API_HOST: VITE_API_ROOT,
+      API_ROOT: VITE_API_HOST,
+      DOMAIN_HOST: VITE_DOMAIN_HOST
     }
   },
   imports: {
@@ -50,16 +47,15 @@ export default defineNuxtConfig({
   nitro: {
     // 用于客户端代理
     devProxy: {
-      [API_ROOT]: {
-        target: API_HOST, // 这里是接口地址
-        changeOrigin: true,
-        prependPath: true,
+      [VITE_API_ROOT]: {
+        target: VITE_API_HOST, // 这里是接口地址
+        changeOrigin: true
       }
     },
     // 该配置用于服务端请求转发
     // routeRules: {
     //   '/api/**': {
-    //     proxy: 'https://xxx.com/api/**'
+    //     proxy: `${VITE_API_HOST}/api/**`
     //   }
     // }
   },
@@ -82,7 +78,7 @@ export default defineNuxtConfig({
       mode: 'out-in' // default
     },
     head: {
-      title: appTitle,
+      title: VITE_APP_TITLE,
       charset: 'utf-8',
       // viewport: 'width=device-width, initial-scale=1.0,  minimum-scale=1.0, viewport-fit=cover,user-scalable=no',
       meta: [
@@ -95,7 +91,7 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
       script: [
         {
-          src: `https://api.map.baidu.com/api?v=1.0&type=webgl&ak=${ak}`,
+          src: `https://api.map.baidu.com/api?v=1.0&type=webgl&ak=${VITE_BAIDU_MAP_AK}`,
           tagPosition: 'bodyClose'
         }
       ]

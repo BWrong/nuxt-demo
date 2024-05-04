@@ -10,3 +10,11 @@ export interface ContentDetail{
   title: string;
   [key:string]: any;
 }
+
+export type ContentList = ContentDetail[];
+
+export interface Keyword {
+  name: string;
+  [key:string]: any;
+}
+

@@ -1,25 +1,36 @@
 // 全局样式
-.pagination-container {
-  display: flex;
-  column-gap: 10px;
+// 分页样式
+.pages {
+  text-align: center;
+  margin: 35px 0 46px;
 }
-.paginate-buttons {
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  cursor: pointer;
-  background-color: rgb(242, 242, 242);
-  border: 1px solid rgb(217, 217, 217);
-  color: black;
+
+// .pages ul{display:inline-block}
+.pages li {
+  margin: 0 8px;
+  display: inline-block;
 }
-.paginate-buttons:hover {
-  background-color: #d8d8d8;
+
+.pages li button {
+  display: block;
+  min-width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid @paginate-color;
+  color: @paginate-color;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  padding: 0 10px;
 }
-.active-page {
-  background-color: #3498db;
-  border: 1px solid #3498db;
-  color: white;
-}
-.active-page:hover {
-  background-color: #2988c8;
+
+.pages button:hover,
+.pages li button.on {
+  color: #fff;
+  background-color: @paginate-color;
+  border: 1px solid @paginate-color;
 }

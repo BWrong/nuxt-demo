@@ -30,11 +30,6 @@ $ yarn generate
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 ## 接口
-- ~~首页~~
-- ~~关于华西~~
-- ~~服务~~
-- ~~案例~~
-- ~~团队~~
-- ~~新闻~~
-- ~~招聘~~
-- 联系
+- 接口联调
+- 登录信息联调
+- ready事件

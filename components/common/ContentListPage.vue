@@ -1,181 +1,108 @@
 <template>
   <div>
-    <loading v-if="showLoading && loading" />
+    <loading v-if="showLoading && pending" />
     <slot
       v-else
-      :list="list"
+      :list="data.list"
       :page-scope-id="pageScopeId"
     />
-    <client-only>
-      <slot
-        v-if="showPage && pageTotal > 1"
-        name="page"
-        :page-now="pageNow"
-        :page-total="pageTotal"
-      >
-        <paginate
-          :value="pageNow"
-          :page-count="pageTotal"
-          page-class="page-item"
-          prev-class="page-prev"
-          next-class="page-next"
-          prev-text="上一页"
-          next-text="下一页"
-          :click-handler="changePage"
-          container-class="pages"
-          active-class="on"
-          v-bind="pageConfig"
-        />
-      </slot>
-    </client-only>
+    <slot
+      v-if="showPage && pageTotal > 1"
+      name="page"
+      :page-now="pageNow"
+      :page-total="pageTotal"
+      :total-items="totals"
+    >
+      <vue-awesome-paginate
+        v-model="pageNow"
+        :items-per-page="pageSize"
+        :total-items="totals"
+        paginate-buttons-class="page-item"
+        back-button-class="page-prev"
+        next-button-class="page-next"
+        prev-button-content="上一页"
+        next-button-content="下一页"
+        :on-click="changePage"
+        pagination-container-class="pages"
+        active-page-class="on"
+        v-bind="pageConfig"
+      />
+    </slot>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ContentListPage',
-  props: {
-    contentTypeId: {
-      type: [String, Number],
-      default: ''
-    },
-    contentTypeKey: {
-      type: String,
-      default: ''
-    },
-    keywordIds: {
-      type: [String, Number],
-      default: ''
-    },
-    keywordKeys: {
-      type: String,
-      default: ''
-    },
-    keywordNames: {
-      type: String,
-      default: ''
-    },
-    keywords: {
-      type: String,
-      default: ''
-    },
-    reverse: {
-      type: Boolean,
-      default: false
-    },
-    pageSize: {
-      type: Number,
-      default: 10
-    },
-    defaultPage: {
-      type: Number,
-      default: 1
-    },
-    showLoading: {
-      type: Boolean,
-      default: true
-    },
-    filter: {
-      type: Function,
-      default: () => true
-    },
-    pageConfig: {
-      type: Object,
-      default: () => {}
-    },
-    showPage: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data() {
+<script setup lang="ts">
+import { getContentByTypePage } from '~/api';
+import type { ContentDetail } from '~/api/types';
+
+defineOptions({ name: 'ContentListPage' });
+interface Props {
+  contentTypeId?: string | number;
+  contentTypeKey?: string;
+  keywordIds?: string | number;
+  keywordKeys?: string;
+  keywordNames?: string;
+  keywords?: string;
+  showLoading?: boolean;
+  filter?: (item: ContentDetail) => boolean;
+  pageSize?: number;
+  defaultPage?: number;
+  showPage?: boolean;
+  reverse?: boolean;
+  pageConfig?: Record<string, any>;
+}
+const props = withDefaults(defineProps<Props>(), {
+  contentTypeId: '',
+  contentTypeKey: '',
+  keywordIds: '',
+  keywordKeys: '',
+  keywordNames: '',
+  keywords: '',
+  showLoading: true,
+  filter: () => true,
+  pageSize: 10,
+  defaultPage: 1,
+  showPage: true,
+  reverse: false,
+  pageConfig: () => ({})
+});
+const pageNow = ref(props.defaultPage);
+
+const { data, pending, refresh, status } = await useAsyncData('contentList' + props, () =>
+  getContentByTypePage({
+    pageNow: pageNow.value,
+    pageSize: props.pageSize,
+    contentTypeId: props.contentTypeId,
+    contentTypeKey: props.contentTypeKey,
+    keywordIds: props.keywordIds,
+    keywordKeys: props.keywordKeys,
+    keywordNames: props.keywordNames,
+    keywords: props.keywords
+  }), {
+  transform: (res) => {
+    const result = res?.list || {};
+    const list = result.records || [];
+    const filterList = list.filter(props.filter) as ContentDetail[];
     return {
-      list: [],
-      pageTotal: 1,
-      pageNow: this.defaultPage,
-      loading: false,
-      pageScopeId: ''
+      list: props.reverse ? filterList.reverse() : filterList,
+      pageNow: result.current,
+      pageTotal: result.pages,
+      total: result.total,
+      pageScopeId: res.pageScopeId
     };
-  },
-  async fetch() {
-    this.loading = true;
-    try {
-      const res = await this.$api.getContentByTypePage({
-        pageNow: this.pageNow,
-        pageSize: this.pageSize,
-        contentTypeId: this.contentTypeId,
-        contentTypeKey: this.contentTypeKey,
-        keywordIds: this.keywordIds,
-        keywordKeys: this.keywordKeys,
-        keywordNames: this.keywordNames,
-        keywords: this.keywords
-      });
-      const result = res?.list || {};
-      const list = result.records || [];
-      this.pageNow = result.current;
-      this.pageTotal = result.pages;
-      this.list = list.filter(this.filter);
-      this.pageScopeId = res.pageScopeId;
-      this.$emit('ready', {
-        pageNow: this.pageNow,
-        pageSize: this.pageSize,
-        pageTotal: this.pageTotal,
-        list: this.reverse ? this.list.reverse() : this.list,
-        pageScopeId: this.pageScopeId
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.loading = false;
-    }
-  },
-  methods: {
-    fetchData(page) {
-      if (page > 0) {
-        this.pageNow = page;
-      }
-      console.log('changed-content: ', page);
-      this.$fetch();
-    },
-    changePage(page) {
-      this.pageNow = page;
-      this.$fetch();
-      this.$emit('change-page', page);
-    }
   }
-};
+});
+const pageTotal = computed(() => data.value?.pageTotal || 1);
+const totals = computed(() => data.value?.total || 1);
+const pageScopeId = computed(() => data.value?.pageScopeId || '');
+const emits = defineEmits(['ready', 'change-page']);
+
+watch(status, (val) => {
+  val === 'success' && emits('ready', data.value);;
+});
+function changePage(page: number) {
+  pageNow.value = page;
+  refresh();
+  emits('change-page', page);
+}
 </script>
-<style lang="less">
-@color: #89141e;
-.pages {
-  text-align: center;
-  margin: 35px 0 46px;
-}
-// .pages ul{display:inline-block}
-.pages li {
-  margin: 0 8px;
-  display: inline-block;
-}
-.pages li a {
-  display: block;
-  min-width: 26px;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  background-color: transparent;
-  border: 1px solid @color;
-  color: @color;
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  padding: 0 10px;
-}
-.pages a:hover,
-.pages li.on a {
-  color: #fff;
-  background-color: @color;
-  border: 1px solid @color;
-}
-</style>
