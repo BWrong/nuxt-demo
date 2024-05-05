@@ -13,6 +13,8 @@ userAgent = userAgent?.toLowerCase() || '';
 // 判断是否在微信打开
 const isWechat = userAgent.indexOf('micromessenger') !== -1;
 store.setIsWechat(isWechat);
+
+useAnimation();
 </script>
 <style>
 .page-enter-active,

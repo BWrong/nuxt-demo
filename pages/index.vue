@@ -81,7 +81,10 @@
         :max-pages-shown="5"
       />
       <li>demo</li>
-      <NuxtLink to="/demo">
+      <NuxtLink
+        to="/demo"
+        no-prefetch
+      >
         demo
       </NuxtLink>
     </ul>
@@ -104,12 +107,7 @@ const ak = import.meta.env.VITE_BAIDU_MAP_AK;
   // return typeof route.params.id === 'string' && /^\d+$/.test(route.params.id);
   // }
 // });
-// 动态设置头部
-useHead({ title: '首页' });
-// 动态设置 SEO 信息
-useSeoMeta({ description: '这是首页' });
 
-useAnimation();
 const region = ref<RegionInputModel>({
   province: '350000',
   city: '350100',

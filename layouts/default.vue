@@ -27,26 +27,26 @@ const route = useRoute();
 const store = useAppStore();
 const isHome = computed(() => route.path === '/');
 const showMask = computed(() => store.showMask);
+const { data } = await useAsyncData(() => getSysconfig());
+
+const systemInfo = data.value;
+store.setSystemInfo(systemInfo);
+headInfo.value = {
+  title: systemInfo.seoTitle,
+  meta: [
+    {
+      hid: 'description',
+      name: 'description',
+      content: systemInfo.seoDescription
+    },
+    {
+      hid: 'keywords',
+      name: 'keywords',
+      content: systemInfo.seoKeywords
+    }
+  ]
+};
 useHead(headInfo);
-async function fetch() {
-  const systemInfo = await getSysconfig();
-  store.setSystemInfo(systemInfo);
-  headInfo.value = {
-    title: systemInfo.seoTitle,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: systemInfo.seoDescription
-      },
-      {
-        hid: 'keywords',
-        name: 'keywords',
-        content: systemInfo.seoKeywords
-      }
-    ]
-  };
-}
 </script>
 <style lang="less" scoped>
 .mask {
@@ -62,23 +62,28 @@ async function fetch() {
   transition: all 0.5s ease;
   opacity: 1;
   z-index: 0;
+
   .logo {
     width: 200px;
     height: auto;
     position: absolute;
   }
+
   .logo2 {
     width: 200px;
     height: auto;
     position: relative;
   }
+
   &.show {
     top: 0;
     opacity: 1;
     z-index: 999999;
+
     .logo {
       animation: flash 1.2s infinite ease-in-out;
     }
+
     .logo2 {
       animation: flash 2.4s infinite ease-in-out;
     }

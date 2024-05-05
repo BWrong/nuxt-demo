@@ -11,15 +11,16 @@
       prev:{{ prev }}
     </ContentDetail>
     <div>list</div>
-    <!-- <ContentList
+    <ContentList
       v-slot="{ list }"
       content-type-id="48"
       @ready="handleReady"
     >
       <div>{{ list }}</div>
-    </ContentList> -->
+    </ContentList>
     <ContentListPage
       v-slot="{ list }"
+      data-aos="fade-up"
       content-type-id="48"
       @ready="handleReady"
     >

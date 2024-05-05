@@ -84,7 +84,6 @@ keywordList({
 });
 const pageTotal = computed(() => data.value?.pageTotal || 1);
 const totals = computed(() => data.value?.total || 1);
-const pageScopeId = computed(() => data.value?.pageScopeId || '');
 const emits = defineEmits(['ready', 'change-page']);
 
 watch(status, (val) => {
