@@ -22,6 +22,7 @@
       v-slot="{ list }"
       data-aos="fade-up"
       content-type-id="48"
+      :page-size="1"
       @ready="handleReady"
     >
       <div>{{ list }}</div>

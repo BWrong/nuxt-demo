@@ -1,20 +1,21 @@
 // 全局样式
 // 分页样式
-.pages {
+.pagination-container {
   text-align: center;
   margin: 35px 0 46px;
 }
 
 // .pages ul{display:inline-block}
-.pages li {
+.pagination-container li {
   margin: 0 8px;
   display: inline-block;
 }
 
-.pages li button {
+.pagination-container li button {
   display: block;
   min-width: 26px;
-  height: 26px;
+  border-radius: 3px;
+  // height: 26px;
   line-height: 26px;
   text-align: center;
   background-color: transparent;
@@ -26,10 +27,16 @@
   -ms-transition: 0.3s;
   -o-transition: 0.3s;
   padding: 0 10px;
+  &.back-button{
+
+  }
+  &.next-button{
+
+  }
 }
 
-.pages button:hover,
-.pages li button.on {
+.pagination-container button:hover,
+.pagination-container li button.active-page {
   color: #fff;
   background-color: @paginate-color;
   border: 1px solid @paginate-color;

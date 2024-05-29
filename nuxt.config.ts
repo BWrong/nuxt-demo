@@ -41,6 +41,9 @@ export default defineNuxtConfig({
     // https://nuxt.com/modules/swiper
     'nuxt-swiper'
   ],
+  eslint: {
+    // options here
+  },
   swiper: {},
   // https://nuxt.com/docs/guide/directory-structure/plugins
   plugins: [],
@@ -53,11 +56,11 @@ export default defineNuxtConfig({
       }
     },
     // 该配置用于服务端请求转发
-    // routeRules: {
-    //   '/api/**': {
-    //     proxy: `${VITE_API_HOST}/api/**`
-    //   }
-    // }
+    routeRules: {
+      [`${VITE_API_ROOT}/**`]: {
+        proxy: `${VITE_API_HOST}/**`
+      }
+    }
   },
   typescript: {
     // typeCheck: true, // 生成时进行类型检查

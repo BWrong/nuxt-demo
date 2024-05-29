@@ -17,14 +17,9 @@
         v-model="pageNow"
         :items-per-page="pageSize"
         :total-items="totals"
-        paginate-buttons-class="page-item"
-        back-button-class="page-prev"
-        next-button-class="page-next"
         prev-button-content="上一页"
         next-button-content="下一页"
         :on-click="changePage"
-        pagination-container-class="pages"
-        active-page-class="on"
         v-bind="pageConfig"
       />
     </slot>
